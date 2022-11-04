@@ -1,74 +1,83 @@
-import { HandleFile, FileType } from './HandleFile';
-import { IPlant, IOpsInfo } from '../interfaces';
+import { ResultSetHeader } from 'mysql2';
+import connection from './connection';
+import { IPlant } from '../interfaces';
 
 class PlantModel {
-  private handleFile = new HandleFile();
-
-  private async updateOpsInfo(incrementAmount = 1): Promise<number> {
-    const opsInfo = await this.handleFile.readFile<IOpsInfo>(FileType.OpsInfo);
-    opsInfo.createdPlants += incrementAmount;
-
-    await this.handleFile.saveFile(FileType.OpsInfo, opsInfo);
-
-    return opsInfo.createdPlants;
-  }
+  private conn = connection;
 
   public async getAll(): Promise<IPlant[]> {
-    const plants = await this.handleFile.readFile<IPlant[]>(FileType.Plants);
+    const query = `SELECT
+      id, breed, size, needs_sun as needsSun, origin, water_Frequency as waterFrequency
+      FROM plants`;
+    const [rows] = await this.conn.execute(query);
+    const plants = rows as IPlant[];
     return plants;
   }
 
   public async create(plant: Omit<IPlant, 'id'>): Promise<IPlant> {
-    const plants = await this.getAll();
+    const {
+      breed, needsSun, origin, size, waterFrequency,
+    } = plant;
+    const query = `INSERT INTO plants (breed, needs_sun, origin, size, water_frequency)
+      VALUES (?, ?, ?, ?, ?)`;
+    const values = [breed, needsSun, origin, size, waterFrequency];
 
-    const newPlantId = await this.updateOpsInfo(1);
-    const newPlant = { id: newPlantId, ...plant };
-    plants.push(newPlant);
+    const [rows] = await this.conn.execute<ResultSetHeader>(query, values);
 
-    await this.handleFile.saveFile(FileType.Plants, plants);
-
+    const newPlant = {
+      id: rows.insertId,
+      ...plant,
+    };
     return newPlant;
   }
 
   public async getById(id: string): Promise<IPlant | null> {
-    const plants = await this.getAll();
+    const query = `SELECT
+      id, breed, size, needs_sun as needsSun, origin, water_Frequency as waterFrequency
+      FROM plants WHERE id = ?`;
+    const values = [id];
+    const [rows] = await this.conn.execute(query, values);
 
-    const plantById = plants.find((plant) => plant.id === parseInt(id, 10));
-    if (!plantById) return null;
-    return plantById;
+    const plantById = rows as IPlant[];
+    if (plantById.length === 0) return null;
+
+    return plantById[0];
   }
 
   public async removeById(id: string): Promise<IPlant | null> {
-    const plants = await this.getAll();
-
-    const removedPlant = plants.find((plant) => plant.id === parseInt(id, 10));
+    const removedPlant = await this.getById(id);
     if (!removedPlant) return null;
 
-    const newPlants = plants.filter((plant) => plant.id !== parseInt(id, 10));
-    this.handleFile.saveFile(FileType.Plants, newPlants);
+    const query = 'DELETE FROM plants WHERE id = ?';
+    const values = [id];
+    await connection.execute(query, values);
 
     return removedPlant;
   }
 
   public async update(plant: IPlant): Promise<IPlant> {
-    const plants = await this.getAll();
+    const {
+      id, breed, needsSun, origin, size, waterFrequency,
+    } = plant;
 
-    const updatedPlants = plants.map((editPlant) => {
-      if (plant.id === editPlant.id) return { ...plant };
-      return editPlant;
-    });
-
-    await this.handleFile.saveFile(FileType.Plants, updatedPlants);
+    const query = `UPDATE plants 
+      SET breed = ?, needs_sun = ?, origin = ?, size = ?, water_frequency = ?
+      WHERE id = ?`;
+    const values = [breed, needsSun, origin, size, waterFrequency, id];
+    await this.conn.execute(query, values);
 
     return plant;
   }
 
   public async getPlantsThatNeedsSun() {
-    const plants = await this.getAll();
+    const [rows] = await this.conn.execute(
+      `SELECT
+      id, breed, size, needs_sun as needsSun, origin, water_Frequency as waterFrequency
+      FROM plants WHERE needs_sun = true`,
+    );
 
-    const filteredPlants = plants.filter((plant) => plant.needsSun);
-
-    return filteredPlants;
+    const plants = rows as IPlant[];
+    return plants;
   }
 }
 
