@@ -21,6 +21,45 @@ class PlantController {
       next(error);
     }
   }
+
+  public async getById(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    try {
+      const plant = await this.service.getById(id);
+      return res.status(200).json(plant);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async remove(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    try {
+      await this.service.removeById(id);
+      return res.status(204).end();
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async update(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    try {
+      const plant = await this.service.update(id, req.body);
+      return res.status(200).json(plant);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async getPlantsThatNeedsSun(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const plant = await this.service.getPlantsThatNeedsSun();
+      return res.status(200).json(plant);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default PlantController;
