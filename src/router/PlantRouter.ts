@@ -1,8 +1,12 @@
 import { Router } from 'express';
 
 import PlantController from '../controllers/PlantController';
+import PlantModel from '../models/PlantModel';
+import PlantService from '../services/PlantService';
 
-const plantController = new PlantController();
+const plantModel = new PlantModel();
+const plantService = new PlantService(plantModel);
+const plantController = new PlantController(plantService);
 
 const plantRouter = Router();
 

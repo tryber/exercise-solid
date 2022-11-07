@@ -1,7 +1,8 @@
 import { HandleFile, FileType } from './HandleFile';
 import { IPlant, IOpsInfo } from '../interfaces';
+import { IPlantModel } from '../interfaces/IPlantModel';
 
-class PlantModel {
+class PlantModel implements IPlantModel {
   private handleFile = new HandleFile();
 
   private async updateOpsInfo(incrementAmount = 1): Promise<number> {
