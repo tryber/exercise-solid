@@ -1,4 +1,3 @@
-// import PlantValidate from './validations/PlantValidate';
 import fs from 'fs/promises';
 import path from 'path';
 import HttpException from './exceptions/HttpException';
