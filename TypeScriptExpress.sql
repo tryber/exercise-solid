@@ -1,14 +1,14 @@
-CREATE DATABASE IF NOT EXISTS `TypeScriptExpress`;
-USE `TypeScriptExpress`;
+CREATE DATABASE IF NOT EXISTS `typescript_express`;
+USE `typescript_express`;
 
 DROP TABLE IF EXISTS `plants`;
 CREATE TABLE `plants` (
-  `id` int NOT NULL AUTO_INCREMENT, 
-  `breed` varchar(100) NOT NULL, 
-  `size` int NOT NULL, 
-  `needs_sun` boolean NOT NULL, 
-  `origin` varchar(250) NOT NULL,
-  `water_frequency` int DEFAULT 0,
+  `id` INT NOT NULL AUTO_INCREMENT, 
+  `breed` VARCHAR(100) NOT NULL, 
+  `size` INT NOT NULL, 
+  `needs_sun` BOOLEAN NOT NULL, 
+  `origin` VARCHAR(250) NOT NULL,
+  `water_frequency` INT DEFAULT 0,
   PRIMARY KEY (`id`)
 );
 

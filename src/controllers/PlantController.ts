@@ -13,7 +13,7 @@ class PlantController {
     }
   }
 
-  public async create(req: Request, res: Response, next: NextFunction) {
+  public async create(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       const plant = await this.service.create(req.body);
       return res.status(201).json(plant);
