@@ -38,16 +38,16 @@ class PlantModel implements IPlantModel {
     return plantById;
   }
 
-  public async removeById(id: string): Promise<IPlant | null> {
+  public async removeById(id: string): Promise<boolean> {
     const plants = await this.getAll();
 
     const removedPlant = plants.find((plant) => plant.id === parseInt(id, 10));
-    if (!removedPlant) return null;
+    if (!removedPlant) return false;
 
     const newPlants = plants.filter((plant) => plant.id !== parseInt(id, 10));
     this.handleFile.saveFile(FileType.Plants, newPlants);
 
-    return removedPlant;
+    return true;
   }
 
   public async update(plant: IPlant): Promise<IPlant> {
