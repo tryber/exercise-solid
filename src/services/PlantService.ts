@@ -29,8 +29,8 @@ class PlantService {
   }
 
   public async removeById(id: string): Promise<void> {
-    const plant = await this.model.removeById(id);
-    if (!plant) throw new NotFoundException('Plant not Found!');
+    const isPlantRemoved = await this.model.removeById(id);
+    if (!isPlantRemoved) throw new NotFoundException('Plant not Found!');
   }
 
   public async update(id: string, plant: Omit<IPlant, 'id'>): Promise<IPlant> {

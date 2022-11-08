@@ -1,4 +1,4 @@
-import { ResultSetHeader } from 'mysql2';
+import { RowDataPacket, ResultSetHeader, OkPacket } from 'mysql2';
 import connection from './connection';
 import { IPlantModel, IPlant } from '../interfaces';
 
@@ -9,7 +9,7 @@ class PlantModel implements IPlantModel {
     const query = `SELECT
       id, breed, size, needs_sun as needsSun, origin, water_Frequency as waterFrequency
       FROM plants`;
-    const [rows] = await this.conn.execute(query);
+    const [rows] = await this.conn.execute<RowDataPacket[]>(query);
     const plants = rows as IPlant[];
     return plants;
   }
@@ -22,10 +22,10 @@ class PlantModel implements IPlantModel {
       VALUES (?, ?, ?, ?, ?)`;
     const values = [breed, needsSun, origin, size, waterFrequency];
 
-    const [rows] = await this.conn.execute<ResultSetHeader>(query, values);
+    const [result] = await this.conn.execute<ResultSetHeader>(query, values);
 
     const newPlant = {
-      id: rows.insertId,
+      id: result.insertId,
       ...plant,
     };
     return newPlant;
@@ -44,15 +44,13 @@ class PlantModel implements IPlantModel {
     return plantById[0];
   }
 
-  public async removeById(id: string): Promise<IPlant | null> {
-    const removedPlant = await this.getById(id);
-    if (!removedPlant) return null;
-
+  public async removeById(id: string): Promise<boolean> {
     const query = 'DELETE FROM plants WHERE id = ?';
     const values = [id];
-    await connection.execute(query, values);
 
-    return removedPlant;
+    const [{ affectedRows }] = await this.conn.execute<OkPacket>(query, values);
+
+    return (affectedRows !== 0);
   }
 
   public async update(plant: IPlant): Promise<IPlant> {
@@ -64,20 +62,9 @@ class PlantModel implements IPlantModel {
       SET breed = ?, needs_sun = ?, origin = ?, size = ?, water_frequency = ?
       WHERE id = ?`;
     const values = [breed, needsSun, origin, size, waterFrequency, id];
-    await this.conn.execute(query, values);
+    await this.conn.execute<OkPacket>(query, values);
 
     return plant;
-  }
-
-  public async getPlantsThatNeedsSun() {
-    const [rows] = await this.conn.execute(
-      `SELECT
-      id, breed, size, needs_sun as needsSun, origin, water_Frequency as waterFrequency
-      FROM plants WHERE needs_sun = true`,
-    );
-
-    const plants = rows as IPlant[];
-    return plants;
   }
 }
 
