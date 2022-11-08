@@ -1,8 +1,9 @@
 import { ResultSetHeader } from 'mysql2';
 import connection from './connection';
 import { IPlant } from '../interfaces';
+import { IPlantModel } from '../interfaces/IPlantModel';
 
-class PlantModel {
+class PlantModel implements IPlantModel {
   private conn = connection;
 
   public async getAll(): Promise<IPlant[]> {

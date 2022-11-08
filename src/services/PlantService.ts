@@ -1,10 +1,10 @@
-import PlantModel from '../models/PlantModel';
 import { INewPlant, IPlant } from '../interfaces';
+import { IPlantModel } from '../interfaces/IPlantModel';
 import { NotFoundException } from './exceptions';
 import PlantValidate from './validations/PlantValidate';
 
 class PlantService {
-  private model: PlantModel = new PlantModel();
+  constructor(private model: IPlantModel) {}
 
   public async getAll(): Promise<IPlant[]> {
     const plants = await this.model.getAll();
