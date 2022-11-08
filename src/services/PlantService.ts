@@ -1,7 +1,6 @@
-import { INewPlant, IPlant } from '../interfaces';
+import { IPlantModel, INewPlant, IPlant } from '../interfaces';
 import { NotFoundException } from './exceptions';
 import PlantValidate from './validations/PlantValidate';
-import { IPlantModel } from '../interfaces/IPlantModel';
 
 class PlantService {
   constructor(private model: IPlantModel) {}
@@ -42,11 +41,6 @@ class PlantService {
 
     const editedPlant = await this.model.update({ id: parseInt(id, 10), ...plant });
     return editedPlant;
-  }
-
-  public async getPlantsThatNeedsSun(): Promise<IPlant[]> {
-    const plants = await this.model.getPlantsThatNeedsSun();
-    return plants;
   }
 }
 

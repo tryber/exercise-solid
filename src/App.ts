@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { PlantRouter, SunnyRouter } from './router';
+import PlantRouter from './router/PlantRouter';
 import errorMiddleware from './middlewares/errorMiddleware';
 
 export default class App {
@@ -17,7 +17,6 @@ export default class App {
 
   private routes(): void {
     this.app.use('/plants', PlantRouter);
-    this.app.use('/sunny', SunnyRouter);
   }
 
   private config():void {

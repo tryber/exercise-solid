@@ -1,10 +1,9 @@
-import { IPlant } from './IPlant';
+import { IPlant } from '.';
 
-export interface IPlantModel {
+export default interface IPlantModel {
   getAll(): Promise<IPlant[]>
   create(plant: Omit<IPlant, 'id'>): Promise<IPlant>
   getById(id: string): Promise<IPlant | null>
   removeById(id: string): Promise<IPlant | null>
   update(plant: IPlant): Promise<IPlant>
-  getPlantsThatNeedsSun(): Promise<IPlant[]>
 }

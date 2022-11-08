@@ -51,15 +51,6 @@ class PlantController {
       next(error);
     }
   }
-
-  public async getPlantsThatNeedsSun(_req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-    try {
-      const plant = await this.service.getPlantsThatNeedsSun();
-      return res.status(200).json(plant);
-    } catch (error) {
-      next(error);
-    }
-  }
 }
 
 export default PlantController;
