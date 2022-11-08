@@ -3,6 +3,6 @@ import mysql from 'mysql2/promise';
 export default mysql.createPool({
   host: 'localhost',
   user: 'root',
-  password: 'mysql',
-  database: 'TypeScriptExpress',
+  password: '', // senha do seu banco de dados
+  database: 'typescript_express',
 });
