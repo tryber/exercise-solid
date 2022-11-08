@@ -1,6 +1,5 @@
-import { IPlant, IOpsInfo } from '../interfaces';
-import { IPlantModel } from '../interfaces/IPlantModel';
-import { FileType, HandleFile } from './HandleFile';
+import { HandleFile, FileType } from './HandleFile';
+import { IPlantModel, IPlant, IOpsInfo } from '../interfaces';
 
 class PlantModel implements IPlantModel {
   private handleFile = new HandleFile();
@@ -62,14 +61,6 @@ class PlantModel implements IPlantModel {
     await this.handleFile.saveFile(FileType.Plants, updatedPlants);
 
     return plant;
-  }
-
-  public async getPlantsThatNeedsSun() {
-    const plants = await this.getAll();
-
-    const filteredPlants = plants.filter((plant) => plant.needsSun);
-
-    return filteredPlants;
   }
 }
 
