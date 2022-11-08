@@ -13,7 +13,6 @@ Agora é necessário adaptar o código de modo a transformá-lo em uma API respe
   - `GET /plants/:id`: retorna uma planta com o id;
   - `DELETE /plants/:id`: deleta uma planta com o id;
   - `PUT /plants/:id`: sobrescreve a planta com id;
-  - `GET /sunny`: retorna as plantas que precisam de sol;
 - Realizar validações necessárias para os novos endpoints;
 - Implementar na camada **Model**, pelo menos uma classe responsável por manipular as informações que estão no `./src/models/database`. Essa classe deve implementar a interface `IModel`:
 
