@@ -2,19 +2,23 @@ import { HandleFile, FileType } from './HandleFile';
 import { IPlantModel, IPlant, IOpsInfo } from '../interfaces';
 
 class PlantModel implements IPlantModel {
-  private handleFile = new HandleFile();
+  private fileTypePlant: FileType = 'plants';
+
+  private fileTypeOpsInfo: FileType = 'opsInfo';
+
+  constructor(private handleFile = new HandleFile()) {}
 
   private async updateOpsInfo(incrementAmount = 1): Promise<number> {
-    const opsInfo = await this.handleFile.readFile<IOpsInfo>(FileType.OpsInfo);
+    const opsInfo = await this.handleFile.readFile<IOpsInfo>(this.fileTypeOpsInfo);
     opsInfo.createdPlants += incrementAmount;
 
-    await this.handleFile.saveFile(FileType.OpsInfo, opsInfo);
+    await this.handleFile.saveFile(this.fileTypeOpsInfo, opsInfo);
 
     return opsInfo.createdPlants;
   }
 
   public async getAll(): Promise<IPlant[]> {
-    const plants = await this.handleFile.readFile<IPlant[]>(FileType.Plants);
+    const plants = await this.handleFile.readFile<IPlant[]>(this.fileTypePlant);
     return plants;
   }
 
@@ -25,7 +29,7 @@ class PlantModel implements IPlantModel {
     const newPlant = { id: newPlantId, ...plant };
     plants.push(newPlant);
 
-    await this.handleFile.saveFile(FileType.Plants, plants);
+    await this.handleFile.saveFile(this.fileTypePlant, plants);
 
     return newPlant;
   }
@@ -45,7 +49,7 @@ class PlantModel implements IPlantModel {
     if (!removedPlant) return false;
 
     const newPlants = plants.filter((plant) => plant.id !== parseInt(id, 10));
-    this.handleFile.saveFile(FileType.Plants, newPlants);
+    this.handleFile.saveFile(this.fileTypePlant, newPlants);
 
     return true;
   }
@@ -58,7 +62,7 @@ class PlantModel implements IPlantModel {
       return editPlant;
     });
 
-    await this.handleFile.saveFile(FileType.Plants, updatedPlants);
+    await this.handleFile.saveFile(this.fileTypePlant, updatedPlants);
 
     return plant;
   }

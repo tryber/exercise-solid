@@ -1,10 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-export enum FileType {
-  Plants = 'plants',
-  OpsInfo = 'opsInfo',
-}
+export type FileType = 'plants' | 'opsInfo';
 
 const PATHS = {
   plants: path.join(__dirname, 'database', 'plantsData.json'),
@@ -14,13 +11,13 @@ const PATHS = {
 export class HandleFile {
   private PATHS = PATHS;
 
-  public async saveFile<DataType>(type: FileType, data: DataType): Promise<void> {
+  public async saveFile<T>(type: FileType, data: T): Promise<void> {
     await fs.writeFile(this.PATHS[`${type}`], JSON.stringify(data, null, 2));
   }
 
-  public async readFile<DataType>(type: FileType): Promise<DataType> {
+  public async readFile<T>(type: FileType): Promise<T> {
     const dataRaw = await fs.readFile(this.PATHS[`${type}`], { encoding: 'utf8' });
-    const data: DataType = JSON.parse(dataRaw);
+    const data: T = JSON.parse(dataRaw);
     return data;
   }
 }
