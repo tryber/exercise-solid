@@ -3,7 +3,11 @@ import { NotFoundException } from './exceptions';
 import PlantValidate from './validations/PlantValidate';
 
 class PlantService {
-  constructor(private model: IPlantModel) {}
+  private readonly model: IPlantModel;
+
+  constructor(model: IPlantModel) {
+    this.model = model;
+  }
 
   public async getAll(): Promise<IPlant[]> {
     const plants = await this.model.getAll();

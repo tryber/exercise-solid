@@ -2,7 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import PlantService from '../services/PlantService';
 
 class PlantController {
-  constructor(private service: PlantService) {}
+  private readonly service: PlantService;
+
+  constructor(service: PlantService) {
+    this.service = service;
+  }
 
   public async getAll(_req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {

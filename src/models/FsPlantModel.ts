@@ -6,7 +6,7 @@ class PlantModel implements IPlantModel {
 
   private fileTypeOpsInfo: FileType = 'opsInfo';
 
-  constructor(private handleFile = new HandleFile()) {}
+  private handleFile = new HandleFile();
 
   private async updateOpsInfo(incrementAmount = 1): Promise<number> {
     const opsInfo = await this.handleFile.readFile<IOpsInfo>(this.fileTypeOpsInfo);
