@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import HttpException from './exceptions/HttpException';
+import HttpException from '../exceptions/HttpException';
 
 interface IPlant {
   id: number,
