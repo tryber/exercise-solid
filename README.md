@@ -16,19 +16,32 @@ Agora é necessário adaptar o código de modo a transformá-lo em uma API respe
   - `DELETE /plants/:id`: deleta uma planta com o id;
   - `PUT /plants/:id`: sobrescreve a planta com id;
 - Realizar validações necessárias para os novos endpoints;
-- Implementar na camada **Model**, pelo menos uma classe responsável por manipular as informações que estão no `./src/models/database`. Essa classe deverá implementar a interface `IModel`:
+- Implementar na camada **Model**, pelo menos uma classe responsável por manipular as informações que estão no `./src/models/database`. Essa classe deverá implementar a interface `IPlantModel`:
 
-
+> ./src/models/interfaces/IModel.ts
 ```ts
-import { IPlant } from './IPlant';
-
-export default interface IPlantModel {
-  getAll(): Promise<IPlant[]>
-  create(plant: Omit<IPlant, 'id'>): Promise<IPlant>
-  getById(id: string): Promise<IPlant | null>
-  removeById(id: string): Promise<IPlant | null>
-  update(plant: IPlant): Promise<IPlant>
+export interface IModelReader<T> {
+  getAll(): Promise<T[]>;
+  getById(id: string): Promise<T | null>
 }
+
+export interface IModelWriter<T> {
+  create(arg: Omit<T, 'id'>): Promise<T>
+  update(arg: T): Promise<T>
+}
+export interface IModelDelete {
+  removeById(id: string): Promise<boolean>
+}
+```
+> ./src/models/interfaces/IPlantModel.ts
+```ts
+import { IModelReader, IModelWriter, IModelDelete } from './IModel';
+import { IPlant } from '../../interfaces';
+
+export default interface IPlantModel extends
+  IModelReader<IPlant>,
+  IModelWriter<IPlant>,
+  IModelDelete {}
 ```
 - Criar demais camadas e/ou arquivos que sejam necessários.
 
