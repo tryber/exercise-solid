@@ -1,5 +1,5 @@
 import { IPlantModel, INewPlant, IPlant } from '../interfaces';
-import { NotFoundException } from './exceptions';
+import { NotFoundException } from '../exceptions';
 import PlantValidate from './validations/PlantValidate';
 
 class PlantService {

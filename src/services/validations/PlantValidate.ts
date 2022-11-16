@@ -1,5 +1,5 @@
 import { INewPlant } from '../../interfaces';
-import { BadRequestException } from '../exceptions';
+import { BadRequestException } from '../../exceptions';
 
 export default class PlantValidate {
   static validateBreed(breed: string): void {
