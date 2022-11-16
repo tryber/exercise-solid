@@ -1,5 +1,5 @@
 import { ErrorRequestHandler } from 'express';
-import HttpException from '../services/exceptions/HttpException';
+import HttpException from '../exceptions/HttpException';
 
 const errorMiddleware: ErrorRequestHandler = (err, _req, res, _next) => {
   console.log('err', err);

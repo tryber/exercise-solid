@@ -1,8 +1,10 @@
-import { IPlantModel, INewPlant, IPlant } from '../interfaces';
-import { NotFoundException } from './exceptions';
+import { INewPlant, IPlant } from '../interfaces';
+import { IPlantService } from './interfaces';
+import { IPlantModel } from '../models/interfaces';
+import { NotFoundException } from '../exceptions';
 import PlantValidate from './validations/PlantValidate';
 
-class PlantService {
+class PlantService implements IPlantService {
   private readonly model: IPlantModel;
 
   constructor(model: IPlantModel) {
