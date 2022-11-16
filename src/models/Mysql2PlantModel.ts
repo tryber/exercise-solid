@@ -1,6 +1,7 @@
 import { RowDataPacket, ResultSetHeader, OkPacket } from 'mysql2';
 import connection from './connection';
-import { IPlantModel, IPlant } from '../interfaces';
+import { IPlantModel } from './interfaces';
+import { IPlant } from '../interfaces';
 
 class PlantModel implements IPlantModel {
   private conn = connection;
