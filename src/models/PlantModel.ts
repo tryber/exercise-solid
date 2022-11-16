@@ -1,5 +1,6 @@
 import { HandleFile, FileType } from './HandleFile';
-import { IPlantModel, IPlant, IOpsInfo } from '../interfaces';
+import { IPlantModel, IOpsInfo } from './interfaces';
+import { IPlant } from '../interfaces';
 
 class PlantModel implements IPlantModel {
   private fileTypePlant: FileType = 'plants';

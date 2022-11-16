@@ -1,4 +1,5 @@
-import { IPlantModel, INewPlant, IPlant } from '../interfaces';
+import { INewPlant, IPlant } from '../interfaces';
+import { IPlantModel } from '../models/interfaces';
 import { NotFoundException } from '../exceptions';
 import PlantValidate from './validations/PlantValidate';
 
