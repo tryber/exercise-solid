@@ -10,3 +10,8 @@ export interface IModelWriter<T> {
 export interface IModelDelete {
   removeById(id: string): Promise<boolean>
 }
+
+export interface IModel<T> extends
+  IModelReader<T>,
+  IModelWriter<T>,
+  IModelDelete {}
